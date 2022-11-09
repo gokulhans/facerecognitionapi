@@ -12,19 +12,20 @@ const profile = require("./controllers/profile");
 const image = require("./controllers/image");
 const dotenv = require("dotenv").config();
 
+var db = require('./connection');
+
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 
-const db = knex({
-  client: "pg",
-  connection: {
-    connectionString: process.env.DATABASE_URL,
-    // ssl:true,
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  },
-});
-
+// const db = knex({
+//   client: "pg",
+//   connection: {
+//     connectionString: process.env.DATABASE_URL,
+//     // ssl:true,
+//     ssl: {
+//       rejectUnauthorized: false,
+//     },
+//   },
+// });
 
 
 const app = express();
@@ -51,6 +52,11 @@ app.put("/image", (req, res) => {
 app.post("/imageUrl", (req, res) => {
   image.handleApiCall(req, res);
 });
+
+db.connect((err) => {
+  if (err) console.log("Connection Error" + err);
+  else console.log("Database connected to port")
+})
 
 app.listen(process.env.PORT || 5000, () => {
   console.log(`app is running in port ${process.env.PORT}`);

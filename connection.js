@@ -1,12 +1,13 @@
-const {MONGOURI} = require('./keys')
+var MONGOURI = "mongodb+srv://gbrozdev:gbrozdev@cluster0.pgxe9.mongodb.net/matrix?retryWrites=true&w=majority"
 
 const mongoClient = require('mongodb').MongoClient
 const state = {
     db:null
 }
+
 module.exports.connect = function(done){
     const url= process.env.DATABASE_URL || MONGOURI
-    const dbname='snippets'
+    const dbname='faceapp'
 
     mongoClient.connect(url,(err,data)=>{
         if(err) return done(err)
