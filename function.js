@@ -6,7 +6,7 @@ var ObjectId = require('mongodb').ObjectId
 module.exports={
     doSignup:(userdata)=>{
         return new Promise(async(resolve,reject)=>{
-            let user= await db.get().collection('users').findOne({gmail:userdata.gmail})
+            let user= await db.get().collection('users').findOne({email:userdata.email})
             if (user) {
                 let response = {}
                 response.signupstatus = false
@@ -14,7 +14,6 @@ module.exports={
             } else {
                 console.log(userdata);
                 userdata.password=await bcrypt.hash(userdata.password,10)
-                userdata.img = 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260'
                 db.get().collection('users').insertOne(userdata).then((response)=>{
                     response.signupstatus = true
                     response.user = userdata
@@ -22,10 +21,11 @@ module.exports={
                 })            
             }
         })
-    }, 
+    },
     doLogin:(userdata)=>{
+        
         return new Promise(async(resolve,reject)=>{
-            let user= await db.get().collection('users').findOne({gmail:userdata.gmail})
+            let user= await db.get().collection('users').findOne({email:userdata.email})
             
             let response = {}
             if (user) {
